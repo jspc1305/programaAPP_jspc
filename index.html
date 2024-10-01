@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Dinámico con Pestañas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .nav-item {
+            display: flex;
+            align-items: center;
+        }
+        .nav-item .btn-close {
+            margin-left: 8px;
+        }
+        .editable-title {
+            border: none;
+            background-color: transparent;
+            font-size: 1rem;
+            max-width: 150px;
+        }
+        .editable-title:focus {
+            outline: none;
+            border-bottom: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Formulario Dinámico con Pestañas</h2>
+        <ul class="nav nav-tabs" id="tabList" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tab-1-tab" data-bs-toggle="tab" data-bs-target="#tab-1" type="button" role="tab" aria-controls="tab-1" aria-selected="true" title="Descripción del Tema">
+                    <input class="editable-title" value="Problema 1" id="title-tab-1">
+                </button>
+                <button class="btn-close" aria-label="Close" onclick="removeTab(1)"></button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="tabContent">
+            <div class="tab-pane fade show active" id="tab-1" role="tabpanel" aria-labelledby="tab-1-tab">
+                <form id="form-1">
+                    <!-- Sección Descripción y Problemas -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h6 title="Elegir un tema local. Documentar este tema; describir diversos aspectos, elementos, características del tema. Señalar, relacionar datos estadísticos. Son elementos que facilitan la descripción del tema, por ejemplo: Datos estadísticos; descripción del lugar, la escena, las situaciones, datos específicos con relación a las situaciones; aclaración de conceptos dentro de la descripción del tema.">Descripción del Tema</h6>
+                            <textarea class="form-control" rows="3" placeholder="Elegir un tema local..."></textarea>
+                        </div>
+                        <div class="col">
+                            <h6 title="Son elementos que facilitan la descripción del tema, por ejemplo: Datos estadísticos; descripción del lugar, la escena, las situaciones, datos específicos con relación a las situaciones; aclaración de conceptos dentro de la descripción del tema.">Descripción de Situaciones de la Práctica</h6>
+                            <textarea class="form-control" rows="3" placeholder="Son elementos que facilitan la descripción del tema..."></textarea>
+                        </div>
+                        <div class="col">
+                            <h6 title="Seleccionar los problemas resultantes de la problematización anterior.  Ordenar esos problemas con algún criterio: histórico, genealógico, menor a mayor profundidad.">Problemas</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Elige Problema</option>
+                                <option disabled value="">5to Primaria--------------------------------------------------------------------------------</option>      
+                                <option value="problema1">Participa en distintas formas de convivencia en la familia, para fortalecer su sentido de pertenencia y afecto.</option>
+                                <option value="problema2">Reflexiona acerca de los valores heredados de la familia, para el desarrollo de una sana convivencia en la escuela y la comunidad.</option>
+                                <option value="problema3">Reflexiona sobre los conflictos que tiene en la escuela y la familia, para valorar las posibles alternativas de solución.</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Nueva lista desplegable "Fase" -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h6>Fase</h6>
+                            <select class="form-select" id="fase-select" required>
+                                <option selected disabled value="">Selecciona una fase</option>
+                                <option value="fase1">Fase III</option>
+                                <option value="fase2">Fase IV</option>
+                                <option value="fase3">Fase V</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Sección de listas desplegables -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h6 title="Identificar el o los campos formativos con los que se relaciona el problema (enlistar)">Campos Formativos</h6>
+                            <select class="form-select" id="campos-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="lenguaje">Lenguaje</option>
+                                <option value="saberes">Saberes y Pensamiento Científico</option>
+                                <option value="etica">Ética, Naturaleza y Sociedades</option>
+                                <option value="humano">De lo Humano y lo Comunitario</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h6 title="Seleccionar los contenidos que se relacionen con el problema.">Contenidos</h6>
+                            <select class="form-select" id="contenidos-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h6 title="Elegir los PDA que se perciban relacionados con los problemas construidos.">PDA</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h6 title="Los ejes articuladores son los elementos que articulan tres cosas a) lo documentado, b) la práctica docente y c) los contenidos y PDA, además de guiar la redacción de los objetos de enseñanza y los aspectos a evaluar.">Ejes Articuladores</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h6 title="Es un producto de la relación entre lo documentado, los contenidos y PDA seleccionados y el eje que los articula.  Se inicia con un verbo, seguido de un sustantivo y se termina con otro verbo que denota la finalidad del primer verbo, ejemplo: Identificar los usos del agua del canal de coria para conocer los diferentes cultivos de la región.">Objetos de Enseñanza</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h6 title="Identificar los verbos contenidos en los objetos de enseñanza escritos y ordenarlos de mayor a menor complejidad.  Agruparlos para que sean la referencia para determinar los proyectos y el orden de los mismos (identificar, describir, dibujar, esquematizar, explicar, comprender, aplicar, cambiar).">Niveles de Logro</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Texto de Evidencia de Aprendizaje -->
+                    <div class="mb-3">
+                        <h6 title="Definir el producto final del proyecto que se espera lograr, como evidencia de las actividades realizadas (cartel, exposición…)">Evidencia de Aprendizaje</h6>
+                        <textarea class="form-control" rows="4" placeholder="Agregar evidencia de aprendizaje aquí"></textarea>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary mt-3" id="addTabBtn">Añadir nueva pestaña</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let tabCount = 1;
+
+        document.getElementById('addTabBtn').addEventListener('click', function () {
+            tabCount++;
+
+            // Crear nueva pestaña
+            const newTab = document.createElement('li');
+            newTab.classList.add('nav-item');
+            newTab.innerHTML = `
+                <button class="nav-link" id="tab-${tabCount}-tab" data-bs-toggle="tab" data-bs-target="#tab-${tabCount}" type="button" role="tab" aria-controls="tab-${tabCount}" aria-selected="false" title="Descripción del Tema">
+                    <input class="editable-title" value="Problema ${tabCount}" id="title-tab-${tabCount}">
+                </button>
+                <button class="btn-close" aria-label="Close" onclick="removeTab(${tabCount})"></button>
+            `;
+            document.getElementById('tabList').appendChild(newTab);
+
+            // Crear nuevo contenido de pestaña
+            const newTabContent = document.createElement('div');
+            newTabContent.classList.add('tab-pane', 'fade');
+            newTabContent.id = `tab-${tabCount}`;
+            newTabContent.setAttribute('role', 'tabpanel');
+            newTabContent.setAttribute('aria-labelledby', `tab-${tabCount}-tab`);
+            newTabContent.innerHTML = `
+                <form id="form-${tabCount}">
+                    <!-- Sección Descripción y Problemas -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h6>Descripción del Tema</h6>
+                            <textarea class="form-control" rows="3" placeholder="Elegir un tema local..."></textarea>
+                        </div>
+                        <div class="col">
+                            <h6>Descripción de Situaciones de la Práctica</h6>
+                            <textarea class="form-control" rows="3" placeholder="Son elementos que facilitan la descripción del tema..."></textarea>
+                        </div>
+                        <div class="col">
+                            <h6>Problemas</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Elige Problema</option>
+                                <option value="problema1">Participa en distintas formas de convivencia...</option>
+                                <option value="problema2">Reflexiona acerca de los valores heredados...</option>
+                                <option value="problema3">Reflexiona sobre los conflictos en la escuela...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Nueva lista desplegable "Fase" -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h6>Fase</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una fase</option>
+                                <option value="fase1">Fase 1</option>
+                                <option value="fase2">Fase 2</option>
+                                <option value="fase3">Fase 3</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Sección de listas desplegables -->
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h6>Campos Formativos</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h6>Contenidos</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h6>PDA</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h6>Ejes Articuladores</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h6>Objetos de Enseñanza</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <h6>Niveles de Logro</h6>
+                            <select class="form-select" required>
+                                <option selected disabled value="">Selecciona una opción</option>
+                                <option value="opcion1">Opción 1</option>
+                                <option value="opcion2">Opción 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Texto de Evidencia de Aprendizaje -->
+                    <div class="mb-3">
+                        <h6>Evidencia de Aprendizaje</h6>
+                        <textarea class="form-control" rows="4" placeholder="Agregar evidencia de aprendizaje aquí"></textarea>
+                    </div>
+
+                </form>
+            `;
+            document.getElementById('tabContent').appendChild(newTabContent);
+
+            // Activar nueva pestaña
+            const newTabButton = new bootstrap.Tab(document.getElementById(`tab-${tabCount}-tab`));
+            newTabButton.show();
+        });
+
+        function removeTab(tabId) {
+            // Eliminar pestaña y contenido asociado
+            document.getElementById(`tab-${tabId}`).remove();
+            document.getElementById(`tab-${tabId}-tab`).closest('li').remove();
+
+            // Mostrar la primera pestaña restante
+            const firstTab = document.querySelector('#tabList .nav-link');
+            if (firstTab) {
+                const firstTabInstance = new bootstrap.Tab(firstTab);
+                firstTabInstance.show();
+            }
+        }
+
+        document.getElementById('fase-select').addEventListener('change', updateContenidos);
+        document.getElementById('campos-select').addEventListener('change', updateContenidos);
+
+        function updateContenidos() {
+            const fase = document.getElementById('fase-select').value;
+            const campo = document.getElementById('campos-select').value;
+            const contenidosSelect = document.getElementById('contenidos-select');
+
+            // Limpiar opciones anteriores
+            contenidosSelect.innerHTML = '<option selected disabled value="">Selecciona una opción</option>';
+
+            // Ejemplo de lógica de opciones basadas en fase y campo
+            if (fase === 'fase1' && campo === 'lenguaje') {
+                contenidosSelect.innerHTML += '<option value="contenido1">Escritura de nombres en la lengua materna.</option> <option value="contenido2">Lectura compartida en voz alta</option> <option value="contenido3">Narración de actividades y eventos relevantes que tengan lugar en la familia, la escuela o el resto de la comunidad.</option> <option value="contenido4">Escritura colectiva por medio del dictado</option>';
+            } else if (fase === 'fase2' && campo === 'saberes') {
+                contenidosSelect.innerHTML += '<option value="contenido2">Contenido 2 para Saberes y Fase 2</option>';
+            } else {
+                contenidosSelect.innerHTML += '<option value="default">No hay contenidos disponibles</option>';
+            }
+        }
+    </script>
+</body>
+</html>
