@@ -75,7 +75,28 @@
 
         <!-- Sección Descripción de Situaciones de la Práctica -->
         <div>
-                        <button type="button" class="btn btn-success" id="addSituacionBtn">Agregar otra descripción de situaciones</button>
+            <div id="situaciones-container" class="row">
+                <div class="situacion-group col-md-6 mb-4">
+                    <h6>Descripción de Situaciones de la Práctica</h6>
+                    <button type="button" class="btn btn-danger btn-sm btn-eliminar-situacion" onclick="removeSituacion(this)">X</button>
+                    <textarea class="form-control mb-2" rows="3" placeholder="Son elementos que facilitan la descripción del tema..."></textarea>
+                    <h6>Problemas</h6>
+                    <div id="problemas-container" class="problemas-container">
+                        <div class="problem-group">
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addProblem(this)">Agregar más problemas</button>
+                    </div>
+                    <hr>
+                    <!-- Lista desplegable de problemas locales -->
+                    <h6>Lista de Problemas de Esta Situación</h6>
+                    <select class="form-select lista-problemas-locales" required>
+                        <option selected disabled value="">Selecciona un problema</option>
+                    </select>
+                </div>
+            </div>
+            <button type="button" class="btn btn-success" id="addSituacionBtn">Agregar otra descripción de situaciones</button>
         </div>
         <hr>
 
