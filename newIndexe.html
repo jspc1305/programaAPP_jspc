@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario Dinámico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .editable-title {
+            border: none;
+            background-color: transparent;
+            font-size: 1rem;
+            max-width: 150px;
+        }
+        .editable-title:focus {
+            outline: none;
+            border-bottom: 1px solid #000;
+        }
+        .problem-group {
+            margin-bottom: 10px;
+        }
+        .situacion-group {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .situacion-group textarea {
+            flex-basis: 100%;
+        }
+        .situacion-group .problem-group {
+            flex-basis: 100%;
+        }
+        .situacion-group .controls {
+            display: flex;
+            justify-content: flex-start;
+        }
+        .btn-eliminar-situacion {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+        hr {
+            border-top: 2px solid #000;
+        }
+        footer {
+            height: 150px; /* Pie de página amplio */
+            background-color: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Formulario Dinámico</h2>
+
+        <!-- Sección Descripción del Tema -->
+        <hr>
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <h6>Descripción del Tema</h6>
+                <textarea class="form-control" rows="3" placeholder="Elegir un tema local..."></textarea>
+            </div>
+        </div>
+        <hr>
+
+        <!-- Sección Descripción de Situaciones de la Práctica -->
+        <div>
+            <div id="situaciones-container" class="row">
+                <div class="situacion-group col-md-6 mb-4">
+                    <h6>Descripción de Situaciones de la Práctica</h6>
+                    <button type="button" class="btn btn-danger btn-sm btn-eliminar-situacion" onclick="removeSituacion(this)">X</button>
+                    <textarea class="form-control mb-2" rows="3" placeholder="Son elementos que facilitan la descripción del tema..."></textarea>
+                    <h6>Problemas</h6>
+                    <div id="problemas-container" class="problemas-container">
+                        <div class="problem-group">
+                            <select class="form-select mb-2" required>
+                                <option selected disabled value="">Elige Problema</option>
+                                <option disabled value="">5to Primaria--------------------------------------------------------------------------------</option>
+                                <option value="problema1">Participa en distintas formas de convivencia en la familia, para fortalecer su sentido de pertenencia y afecto.</option>
+                                <option value="problema2">Reflexiona acerca de los valores heredados de la familia, para el desarrollo de una sana convivencia en la escuela y la comunidad.</option>
+                                <option value="problema3">Reflexiona sobre los conflictos que tiene en la escuela y la familia, para valorar las posibles alternativas de solución.</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addProblem(this)">Agregar más problemas</button>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <button type="button" class="btn btn-success" id="addSituacionBtn">Agregar otra descripción de situaciones</button>
+        </div>
+        <hr>
+
+        <!-- Sección Fase -->
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Fase</h6>
+                <select class="form-select" required>
+                    <option selected disabled value="">Selecciona una fase</option>
+                    <option value="fase1">Fase III</option>
+                    <option value="fase2">Fase IV</option>
+                    <option value="fase3">Fase V</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pie de página amplio -->
+    <footer>
+        <p>Pie de página amplio para facilitar la navegación.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('addSituacionBtn').addEventListener('click', function () {
+            const container = document.getElementById('situaciones-container');
+            const newSituacion = document.createElement('div');
+            newSituacion.classList.add('situacion-group', 'col-md-6', 'mb-4');
+            newSituacion.innerHTML = `
+                <h6>Descripción de Situaciones de la Práctica</h6>
+                <button type="button" class="btn btn-danger btn-sm btn-eliminar-situacion" onclick="removeSituacion(this)">X</button>
+                <textarea class="form-control mb-2" rows="3" placeholder="Son elementos que facilitan la descripción del tema..."></textarea>
+                <h6>Problemas</h6>
+                <div id="problemas-container" class="problemas-container">
+                    <div class="problem-group">
+                        <select class="form-select mb-2" required>
+                            <option selected disabled value="">Elige Problema</option>
+                            <option disabled value="">5to Primaria--------------------------------------------------------------------------------</option>
+                            <option value="problema1">Participa en distintas formas de convivencia en la familia, para fortalecer su sentido de pertenencia y afecto.</option>
+                            <option value="problema2">Reflexiona acerca de los valores heredados de la familia, para el desarrollo de una sana convivencia en la escuela y la comunidad.</option>
+                            <option value="problema3">Reflexiona sobre los conflictos que tiene en la escuela y la familia, para valorar las posibles alternativas de solución.</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button type="button" class="btn btn-success btn-sm" onclick="addProblem(this)">Agregar más problemas</button>
+                </div>
+                <hr>
+            `;
+            container.appendChild(newSituacion);
+        });
+
+        function addProblem(button) {
+            const problemasContainer = button.closest('.situacion-group').querySelector('.problemas-container');
+            const problemGroup = document.createElement('div');
+            problemGroup.classList.add('problem-group');
+            problemGroup.innerHTML = `
+                <select class="form-select mb-2" required>
+                    <option selected disabled value="">Elige Problema</option>
+                    <option disabled value="">5to Primaria--------------------------------------------------------------------------------</option>
+                    <option value="problema1">Participa en distintas formas de convivencia en la familia, para fortalecer su sentido de pertenencia y afecto.</option>
+                    <option value="problema2">Reflexiona acerca de los valores heredados de la familia, para el desarrollo de una sana convivencia en la escuela y la comunidad.</option>
+                    <option value="problema3">Reflexiona sobre los conflictos que tiene en la escuela y la familia, para valorar las posibles alternativas de solución.</option>
+                </select>
+                <button type="button" class="btn btn-danger btn-sm mb-2" onclick="removeProblem(this)">Eliminar problema</button>
+            `;
+            problemasContainer.appendChild(problemGroup);
+        }
+
+        function removeProblem(button) {
+            button.parentElement.remove();
+        }
+
+        function removeSituacion(button) {
+            button.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
