@@ -75,6 +75,7 @@
 
         <!-- Sección Descripción de Situaciones de la Práctica -->
         <div>
+            <h6>Descripción de Situaciones de la Práctica</h6>
             <div id="situaciones-container" class="row">
                 <div class="situacion-group col-md-6 mb-4">
                     <h6>Descripción de Situaciones de la Práctica</h6>
@@ -83,13 +84,7 @@
                     <h6>Problemas</h6>
                     <div id="problemas-container" class="problemas-container">
                         <div class="problem-group">
-                            <select class="form-select mb-2" required>
-                                <option selected disabled value="">Elige Problema</option>
-                                <option disabled value="">5to Primaria--------------------------------------------------------------------------------</option>
-                                <option value="problema1">Participa en distintas formas de convivencia en la familia, para fortalecer su sentido de pertenencia y afecto.</option>
-                                <option value="problema2">Reflexiona acerca de los valores heredados de la familia, para el desarrollo de una sana convivencia en la escuela y la comunidad.</option>
-                                <option value="problema3">Reflexiona sobre los conflictos que tiene en la escuela y la familia, para valorar las posibles alternativas de solución.</option>
-                            </select>
+                            <textarea class="form-control mb-2" rows="2" placeholder="Redacta un problema"></textarea>
                         </div>
                     </div>
                     <div class="controls">
@@ -102,15 +97,12 @@
         </div>
         <hr>
 
-        <!-- Sección Fase -->
+        <!-- Lista desplegable de todos los problemas -->
         <div class="row">
             <div class="col-md-6">
-                <h6>Fase</h6>
-                <select class="form-select" required>
-                    <option selected disabled value="">Selecciona una fase</option>
-                    <option value="fase1">Fase III</option>
-                    <option value="fase2">Fase IV</option>
-                    <option value="fase3">Fase V</option>
+                <h6>Lista de Problemas Agregados</h6>
+                <select class="form-select" id="problemas-lista" required>
+                    <option selected disabled value="">Selecciona un problema</option>
                 </select>
             </div>
         </div>
@@ -134,13 +126,7 @@
                 <h6>Problemas</h6>
                 <div id="problemas-container" class="problemas-container">
                     <div class="problem-group">
-                        <select class="form-select mb-2" required>
-                            <option selected disabled value="">Elige Problema</option>
-                            <option disabled value="">5to Primaria--------------------------------------------------------------------------------</option>
-                            <option value="problema1">Participa en distintas formas de convivencia en la familia, para fortalecer su sentido de pertenencia y afecto.</option>
-                            <option value="problema2">Reflexiona acerca de los valores heredados de la familia, para el desarrollo de una sana convivencia en la escuela y la comunidad.</option>
-                            <option value="problema3">Reflexiona sobre los conflictos que tiene en la escuela y la familia, para valorar las posibles alternativas de solución.</option>
-                        </select>
+                        <textarea class="form-control mb-2" rows="2" placeholder="Redacta un problema"></textarea>
                     </div>
                 </div>
                 <div class="controls">
@@ -156,24 +142,61 @@
             const problemGroup = document.createElement('div');
             problemGroup.classList.add('problem-group');
             problemGroup.innerHTML = `
-                <select class="form-select mb-2" required>
-                    <option selected disabled value="">Elige Problema</option>
-                    <option disabled value="">5to Primaria--------------------------------------------------------------------------------</option>
-                    <option value="problema1">Participa en distintas formas de convivencia en la familia, para fortalecer su sentido de pertenencia y afecto.</option>
-                    <option value="problema2">Reflexiona acerca de los valores heredados de la familia, para el desarrollo de una sana convivencia en la escuela y la comunidad.</option>
-                    <option value="problema3">Reflexiona sobre los conflictos que tiene en la escuela y la familia, para valorar las posibles alternativas de solución.</option>
-                </select>
+                <textarea class="form-control mb-2" rows="2" placeholder="Redacta un problema"></textarea>
                 <button type="button" class="btn btn-danger btn-sm mb-2" onclick="removeProblem(this)">Eliminar problema</button>
             `;
             problemasContainer.appendChild(problemGroup);
         }
 
         function removeProblem(button) {
+            const problemText = button.previousElementSibling.value;
+            if (problemText !== "") {
+                removeFromDropdown(problemText);
+            }
             button.parentElement.remove();
         }
 
         function removeSituacion(button) {
             button.parentElement.remove();
+        }
+
+        // Actualizar la lista desplegable con problemas agregados
+        function addToDropdown(problemText) {
+            const problemasLista = document.getElementById('problemas-lista');
+            const option = document.createElement('option');
+            option.value = problemText;
+            option.text = problemText;
+            problemasLista.appendChild(option);
+        }
+
+        function removeFromDropdown(problemText) {
+            const problemasLista = document.getElementById('problemas-lista');
+            const options = problemasLista.querySelectorAll('option');
+            options.forEach(option => {
+                if (option.value === problemText) {
+                    option.remove();
+                }
+            });
+        }
+
+        // Al agregar un problema, lo añadimos también a la lista desplegable
+        function addProblem(button) {
+            const problemasContainer = button.closest('.situacion-group').querySelector('.problemas-container');
+            const problemGroup = document.createElement('div');
+            problemGroup.classList.add('problem-group');
+            problemGroup.innerHTML = `
+                <textarea class="form-control mb-2" rows="2" placeholder="Redacta un problema"></textarea>
+                <button type="button" class="btn btn-danger btn-sm mb-2" onclick="removeProblem(this)">Eliminar problema</button>
+            `;
+            problemasContainer.appendChild(problemGroup);
+
+            // Almacenar el problema redactado en la lista desplegable
+            const textarea = problemGroup.querySelector('textarea');
+            textarea.addEventListener('blur', function () {
+                if (textarea.value !== "") {
+                    addToDropdown(textarea.value);
+                }
+            });
         }
     </script>
 </body>
