@@ -82,27 +82,21 @@
                     <textarea class="form-control mb-2" rows="3" placeholder="Son elementos que facilitan la descripción del tema..."></textarea>
                     <h6>Problemas</h6>
                     <div id="problemas-container" class="problemas-container">
-                        <div class="problem-group">
-                    </div>
                     <div class="controls">
                         <button type="button" class="btn btn-success btn-sm" onclick="addProblem(this)">Agregar más problemas</button>
                     </div>
                     <hr>
+                    <!-- Lista desplegable de problemas locales -->
+                    <h6>Lista de Problemas de Esta Situación</h6>
+                    <select class="form-select lista-problemas-locales" required>
+                        <option selected disabled value="">Selecciona un problema</option>
+                    </select>
                 </div>
             </div>
             <button type="button" class="btn btn-success" id="addSituacionBtn">Agregar otra descripción de situaciones</button>
         </div>
         <hr>
 
-        <!-- Lista desplegable de todos los problemas -->
-        <div class="row">
-            <div class="col-md-6">
-                <h6>Lista de Problemas Agregados</h6>
-                <select class="form-select" id="problemas-lista" required>
-                    <option selected disabled value="">Selecciona un problema</option>
-                </select>
-            </div>
-        </div>
     </div>
 
     <!-- Pie de página amplio -->
@@ -130,6 +124,11 @@
                     <button type="button" class="btn btn-success btn-sm" onclick="addProblem(this)">Agregar más problemas</button>
                 </div>
                 <hr>
+                <!-- Lista desplegable de problemas locales -->
+                <h6>Lista de Problemas de Esta Situación</h6>
+                <select class="form-select lista-problemas-locales" required>
+                    <option selected disabled value="">Selecciona un problema</option>
+                </select>
             `;
             container.appendChild(newSituacion);
         });
@@ -143,12 +142,20 @@
                 <button type="button" class="btn btn-danger btn-sm mb-2" onclick="removeProblem(this)">Eliminar problema</button>
             `;
             problemasContainer.appendChild(problemGroup);
+
+            // Almacenar el problema redactado en la lista desplegable local
+            const textarea = problemGroup.querySelector('textarea');
+            textarea.addEventListener('blur', function () {
+                if (textarea.value !== "") {
+                    addToLocalDropdown(button, textarea.value);
+                }
+            });
         }
 
         function removeProblem(button) {
             const problemText = button.previousElementSibling.value;
             if (problemText !== "") {
-                removeFromDropdown(problemText);
+                removeFromDropdown(button, problemText);
             }
             button.parentElement.remove();
         }
@@ -157,41 +164,21 @@
             button.parentElement.remove();
         }
 
-        // Actualizar la lista desplegable con problemas agregados
-        function addToDropdown(problemText) {
-            const problemasLista = document.getElementById('problemas-lista');
+        // Actualizar la lista desplegable local con problemas agregados
+        function addToLocalDropdown(button, problemText) {
+            const problemasLista = button.closest('.situacion-group').querySelector('.lista-problemas-locales');
             const option = document.createElement('option');
             option.value = problemText;
             option.text = problemText;
             problemasLista.appendChild(option);
         }
 
-        function removeFromDropdown(problemText) {
-            const problemasLista = document.getElementById('problemas-lista');
+        function removeFromDropdown(button, problemText) {
+            const problemasLista = button.closest('.situacion-group').querySelector('.lista-problemas-locales');
             const options = problemasLista.querySelectorAll('option');
             options.forEach(option => {
                 if (option.value === problemText) {
                     option.remove();
-                }
-            });
-        }
-
-        // Al agregar un problema, lo añadimos también a la lista desplegable
-        function addProblem(button) {
-            const problemasContainer = button.closest('.situacion-group').querySelector('.problemas-container');
-            const problemGroup = document.createElement('div');
-            problemGroup.classList.add('problem-group');
-            problemGroup.innerHTML = `
-                <textarea class="form-control mb-2" rows="2" placeholder="Redacta un problema"></textarea>
-                <button type="button" class="btn btn-danger btn-sm mb-2" onclick="removeProblem(this)">Eliminar problema</button>
-            `;
-            problemasContainer.appendChild(problemGroup);
-
-            // Almacenar el problema redactado en la lista desplegable
-            const textarea = problemGroup.querySelector('textarea');
-            textarea.addEventListener('blur', function () {
-                if (textarea.value !== "") {
-                    addToDropdown(textarea.value);
                 }
             });
         }
