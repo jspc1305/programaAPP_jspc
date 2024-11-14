@@ -1,423 +1,254 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DidacticApp v0.1</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Línea de Tiempo de la Historia de la Educación</title>
+<style>
+    /* Estilos básicos */
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 20px;
+        flex-direction: column;
+    }
 
-    <style>
-        .editable-title {
-            border: none;
-            background-color: transparent;
-            font-size: 1rem;
-            max-width: 150px;
-        }
-        .editable-title:focus {
-            outline: none;
-            border-bottom: 1px solid #000;
-        }
-        .problem-group {
-            margin-bottom: 10px;
-        }
-        .situacion-group {
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #dee2e6;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 15px;
-            position: relative;
-        }
-        .situacion-group textarea {
-            flex-basis: 100%;
-        }
-        .situacion-group .problem-group {
-            flex-basis: 100%;
-        }
-        .situacion-group .controls {
-            display: flex;
-            justify-content: flex-start;
-        }
-        .btn-eliminar-situacion {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-        }
-        .controls {
-            margin-top: 10px;
-        }
-        hr {
-            border-top: 2px solid #000;
-        }
-        footer {
-            height: 150px; /* Pie de página amplio */
-            background-color: #f8f9fa;
-            padding: 20px;
-            text-align: center;
-            margin-top: 20px;
-        }
-        #faseSection {
-            display: none;
-        }
-        .row-matrix {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        .row-matrix .col {
-            flex: 1;
-            padding: 5px;
-        }
-        .add-row-btn, .remove-row-btn {
-            margin-left: 10px;
-        }
-        .header-row {
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        .textarea-evidencia {
-            height: 100px;
-        }
-    </style>
+    h1 {
+        color: #333;
+        text-align: center;
+    }
+
+    .header-info {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    /* Contenedor de la línea de tiempo */
+    .timeline-container {
+        position: relative;
+        width: 90%;
+        max-width: 1000px;
+        margin-top: 20px;
+    }
+
+    /* Línea central */
+    .timeline-line {
+        position: absolute;
+        left: 50%;
+        width: 4px;
+        height: 100%;
+        background-color: #333;
+        transform: translateX(-50%);
+    }
+
+    /* Estilo de cada evento */
+    .timeline-event {
+        position: relative;
+        margin: 20px 0;
+        padding: 10px;
+        width: 40%;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    /* Evento en el lado izquierdo */
+    .timeline-event.left {
+        left: 0;
+    }
+
+    /* Evento en el lado derecho */
+    .timeline-event.right {
+        left: 60%;
+    }
+
+    /* Conexión del evento con la línea central */
+    .timeline-event::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        width: 15px;
+        height: 15px;
+        background-color: #333;
+        border-radius: 50%;
+    }
+    .timeline-event.left::before {
+        right: -27px;
+    }
+    .timeline-event.right::before {
+        left: -27px;
+    }
+
+    /* Efecto hover */
+    .timeline-event:hover {
+        background-color: #e0e4ff;
+    }
+
+    /* Estilo del texto de descripción */
+    .event-description {
+        display: none;
+        font-size: 14px;
+        margin-top: 10px;
+        color: #333;
+    }
+
+    /* Estilo del título de cada evento */
+    .event-title {
+        font-weight: bold;
+        font-size: 16px;
+        color: #555;
+    }
+
+    /* Colores personalizados */
+    .color1 { background-color: #ffdddd; } /* Humanismo */
+    .color2 { background-color: #ddffdd; } /* Reforma */
+    .color3 { background-color: #ddddff; } /* Contrarreforma */
+    .color4 { background-color: #ffdede; } /* Neohumanismo */
+    .color5 { background-color: #deffde; } /* Nacionalismo, Socialismo, Positivismo */
+    .color6 { background-color: #dedefd; } /* Pragmatismo */
+    img {
+        max-width: 100%;
+        height: auto;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+</style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h2>DidacticApp v0.1</h2>
 
-        <!-- Sección principal -->
-        <div id="mainSection">
-            <hr>
-            <h4>PLANO DE LA REALIDAD. PROBLEMATIZACIÓN</h4>
-            <div class="row mb-4">
-                <div class="col-md-12">
-                    <h6>Descripción del Tema</h6>
-                    <textarea class="form-control" id="descripcionTema" rows="3" placeholder="Son elementos que facilitan la descripción del tema, por ejemplo: Datos estadísticos; descripción del lugar, la escena, las situaciones, datos específicos con relación a las situaciones; aclaración de conceptos dentro de la descripción del tema."></textarea>
-                </div>
-            </div>
-            <hr>
+<h1>Línea de Tiempo de la Historia de la Educación</h1>
+<div class="header-info">
+    <p>Autor: José Sebastián Pérez Chapa</p>
+    <p>Colegio: Instituto Juan Amos Comenio</p>
+</div>
+<div class="timeline-container">
+    <div class="timeline-line"></div>
 
-            <div>
-                <div id="situaciones-container" class="row">
-                    <button type="button" class="btn btn-success" id="addSituacionBtn">Agregar otra descripción de situaciones</button>
-                    <div class="situacion-group col-md-6 mb-4">
-                        <h6>Descripción de Situaciones de la Práctica</h6>
-                        <button type="button" class="btn btn-danger btn-sm btn-eliminar-situacion" onclick="removeSituacion(this)">X</button>
-                        <textarea class="form-control mb-2" rows="3" placeholder="Son elementos que facilitan la descripción del tema, por ejemplo: Datos estadísticos; descripción del lugar, la escena, las situaciones, datos específicos con relación a las situaciones; aclaración de conceptos dentro de la descripción del tema."></textarea>
-                        <h6>Problemas</h6>
-                        <div id="problemas-container" class="problemas-container">
-                            <div class="problem-group"></div>
-                        </div>
-                        <div class="controls">
-                            <button type="button" class="btn btn-success btn-sm" onclick="addProblem(this)">Agregar más problemas</button>
-                        </div>
-                        <hr>
-                        <!-- Lista desplegable de problemas locales -->
-                        <h6>Lista de Problemas de Esta Situación</h6>
-                        <select class="form-select lista-problemas-locales" required>
-                            <option selected disabled value="">Selecciona un problema</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <hr>
-
-            <button type="button" class="btn btn-primary" id="nextBtn">Siguiente</button>
+    <!-- Eventos de la historia de la educación universal -->
+    <div class="timeline-event right color7" onclick="toggleDescription(this)">
+        <div class="event-title">Educación en Roma (Siglo III a.C. - Siglo V d.C.)</div>
+        <div class="event-description">
+            La educación en la antigua Roma estaba destinada principalmente a los hijos de familias acomodadas. Comenzaba en el hogar, y luego los jóvenes asistían a escuelas donde se enseñaba literatura, retórica, y filosofía griega. Se destacaron figuras como Marco Fabio Quintiliano (35-100 d.C.), quien impulsó métodos pedagógicos avanzados y valoraba la formación moral. La educación romana influyó profundamente en la pedagogía occidental.
+            <img src="https://a1.elespanol.com/cronicaglobal/2024/06/25/historia/865673502_13141120_1706x960.jpg" alt="Educación en Roma">
         </div>
-        <!-- Sección Fase y Problemas -->
-        <div id="faseSection">
-            <hr>
-            <h4>PLANO DE LA CONTEXTUALIZACIÓN</h4>
-            <div class="row header-row">
-                <div class="col">Problemas Redactados</div>
-                <div class="col">Fase</div>
-                <div class="col">Campos Formativos</div>
-                <div class="col">Contenidos</div>
-                <div class="col">PDA</div>
-                <div class="col">Eje Articulador</div>
-                <div class="col">Objeto de Enseñanza</div>
-                <div class="col">Nivel de Logro</div>
-                <div class="col">Evidencia de Aprendizaje</div>
-                <div class="col">Eliminar</div>
-            </div>
-
-            <div id="matrix-container">
-                <div class="row-matrix">
-                    <div class="col">
-                        <select class="form-select" id="problemasSelect">
-                            <option selected disabled value="">Selecciona un problema</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" id="faseSelect">
-                            <option selected disabled value="">Fase</option>
-                            <option value="fase1">Fase 1</option>
-                            <option value="fase2">Fase 2</option>
-                            <option value="fase3">Fase 3</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" id="camposFormativosSelect">
-                            <option selected disabled value="">Selecciona un campo formativo</option>
-                            <option value="campo1">Campo Formativo 1</option>
-                            <option value="campo2">Campo Formativo 2</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" id="contenidosSelect">
-                            <option selected disabled value="">Selecciona un contenido</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select" id="pdaSelect">
-                            <option selected disabled value="">Selecciona un PDA</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select">
-                            <option selected disabled value="">Selecciona un eje articulador</option>
-                            <option value="eje1">Eje 1</option>
-                            <option value="eje2">Eje 2</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select">
-                            <option selected disabled value="">Selecciona un objeto de enseñanza</option>
-                            <option value="objeto1">Objeto 1</option>
-                            <option value="objeto2">Objeto 2</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <select class="form-select">
-                            <option selected disabled value="">Selecciona un nivel de logro</option>
-                            <option value="nivel1">Nivel 1</option>
-                            <option value="nivel2">Nivel 2</option>
-                        </select>
-                    </div>
-                    <div class="col">
-                        <textarea class="form-control textarea-evidencia" placeholder="Evidencia de Aprendizaje"></textarea>
-                    </div>
-                    <div class="col">
-                        <button type="button" class="btn btn-danger remove-row-btn">-</button>
-                    </div>
-                </div>
-            </div>
-            <button type="button" class="btn btn-success add-row-btn" id="addRowBtn">+</button>
-
-            <button type="button" class="btn btn-secondary" id="previousBtn">Anterior</button>
+    </div>
+    <div class="timeline-event left color1" onclick="toggleDescription(this)">
+        <div class="event-title">Siglo XV - Humanismo (1400-1500)</div>
+        <div class="event-description">
+            Movimiento cultural que promueve la educación basada en el estudio de las humanidades. Los humanistas creen que el conocimiento de la literatura clásica enriquece la mente y el espíritu.
+            <img src="https://www.worldhistory.org/img/r/p/1000x1200/12693.jpg.webp?v=1730818207" alt="Humanismo">
         </div>
     </div>
 
+    <div class="timeline-event right color2" onclick="toggleDescription(this)">
+        <div class="event-title">Siglo XVI - Reforma (1517-1648)</div>
+        <div class="event-description">
+            Iniciado por Martín Lutero, la Reforma protestante desafió la autoridad de la Iglesia y promovió la lectura directa de la Biblia, lo que incentivó la educación laica.
+            <img src="https://filosofiaenlared.com/wp-content/uploads/2023/12/martin-lutero_reforma-protestante_95-tesis_excomunion-lutero_papa-leon-x_teologia-cristiana_historia-de-la-iglesia_luteranos.png" alt="Reforma">
+        </div>
+    </div>
 
-    <footer>
-        <p>Pie de página amplio para facilitar la navegación.</p>
-    </footer>
+    <div class="timeline-event left color3" onclick="toggleDescription(this)">
+        <div class="event-title">Siglo XVII - Contrarreforma (1545-1700)</div>
+        <div class="event-description">
+            La Iglesia Católica responde a la Reforma con un esfuerzo educativo para consolidar la fe católica a través de la creación de colegios y universidades jesuitas.
+            <img src="https://www.worldhistory.org/img/r/p/1000x1200/15987.jpg.webp?v=1709264283" alt="Contrarreforma">
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.getElementById('addSituacionBtn').addEventListener('click', function () {
-            const container = document.getElementById('situaciones-container');
-            const newSituacion = document.createElement('div');
-            newSituacion.classList.add('situacion-group', 'col-md-6', 'mb-4');
-            newSituacion.innerHTML = `
-                <h6>Descripción de Situaciones de la Práctica</h6>
-                <button type="button" class="btn btn-danger btn-sm btn-eliminar-situacion" onclick="removeSituacion(this)">X</button>
-                <textarea class="form-control mb-2" rows="3" placeholder="Son elementos que facilitan la descripción del tema, por ejemplo: Datos estadísticos; descripción del lugar, la escena, las situaciones, datos específicos con relación a las situaciones; aclaración de conceptos dentro de la descripción del tema."></textarea>
-                <h6>Problemas</h6>
-                <div id="problemas-container" class="problemas-container">
-                    <div class="problem-group"></div>
-                </div>
-                <div class="controls">
-                    <button type="button" class="btn btn-success btn-sm" onclick="addProblem(this)">Agregar más problemas</button>
-                </div>
-                <hr>
-                <h6>Lista de Problemas de Esta Situación</h6>
-                <select class="form-select lista-problemas-locales" required>
-                    <option selected disabled value="">Selecciona un problema</option>
-                </select>
-            `;
-            container.appendChild(newSituacion);
-        });
+    <div class="timeline-event right color4" onclick="toggleDescription(this)">
+        <div class="event-title">Siglo XVIII - Neohumanismo Pedagógico (1700-1800)</div>
+        <div class="event-description">
+            Se retoman los ideales clásicos del humanismo, promoviendo una educación que forma a la persona en todas sus dimensiones (física, intelectual y moral).
+            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgx7i4S2bwnl5XoFcEiQv0VuCrnQRKnBMQ6SmUSHxzx7PpMu_uRJusgf5e6BhHTse38r7Zq8skc1D9O4wZbg444ogqs4tcSrJ4owYWQ7LcIiB_RY4hhvd-xN9W2vnmd50SU7z_5F-coPs_r/w1200-h630-p-k-no-nu/Pestalozzi_with_the_orphans_in_Stans.jpg" alt="Neohumanismo">
+        </div>
+    </div>
 
-        function updateContenidos() {
-            const fase = document.getElementById('faseSelect').value;
-            const campoFormativo = document.getElementById('camposFormativosSelect').value;
-            const contenidosSelect = document.getElementById('contenidosSelect');
-            
-            // Limpiar contenidos anteriores
-            contenidosSelect.innerHTML = '<option selected disabled value="">Selecciona un contenido</option>';
-            
-            // Aquí puedes modificar el contenido según fase y campo formativo
-            if (fase === 'fase1' && campoFormativo === 'campo1') {
-                contenidosSelect.innerHTML += '<option value="contenido1">Contenido 1</option>';
-            } else if (fase === 'fase2' && campoFormativo === 'campo2') {
-                contenidosSelect.innerHTML += '<option value="contenido2">Contenido 2</option>';
-            }
+    <div class="timeline-event left color5" onclick="toggleDescription(this)">
+        <div class="event-title">Siglo XIX - Nacionalismo y Socialismo Utópico (1800-1900)</div>
+        <div class="event-description">
+            La educación se enfoca en el fortalecimiento del estado-nación y las ideas socialistas promueven una educación igualitaria.
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT30elyFoHZ3_XTbCi9YbG8yvDNRGP3PVgS1w&s" alt="Nacionalismo">
+        </div>
+    </div>
+
+    <div class="timeline-event right color6" onclick="toggleDescription(this)">
+        <div class="event-title">Siglo XX - Pragmatismo (Dewey) (1900-2000)</div>
+        <div class="event-description">
+            John Dewey introduce el pragmatismo, proponiendo una educación centrada en la experiencia práctica y en el aprendizaje colaborativo.
+            <img src="https://pymstatic.com/20981/conversions/john-dewey-wide.jpg" alt="Pragmatismo">
+        </div>
+    </div>
+
+    <!-- Eventos específicos de la historia de la educación en México -->
+    <div class="timeline-event left color1" onclick="toggleDescription(this)">
+        <div class="event-title">Época Prehispánica (antes de 1521)</div>
+        <div class="event-description">
+            <strong>Situación política:</strong> Estados teocráticos organizados. <br>
+            <strong>Organización social:</strong> Clases sociales claramente diferenciadas.<br>
+            <strong>Calmecac y Tepochcalli:</strong> Instituciones de educación para nobles y comunes.
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWLJs5dzWGQuxaejoXaZZNDRFS28WNsHMwbQ&s" alt="Educación Prehispánica">
+        </div>
+    </div>
+
+    <div class="timeline-event right color2" onclick="toggleDescription(this)">
+        <div class="event-title">La Colonia (1521-1821)</div>
+        <div class="event-description">
+            <strong>Evangelización:</strong> Uso de la educación para la conversión religiosa.<br>
+            <strong>Órdenes eclesiásticas:</strong> Las órdenes religiosas controlaban la educación.<br>
+            <strong>Artes y oficios:</strong> Enseñanza práctica de habilidades.
+            <img src="https://www.lifeder.com/wp-content/uploads/2019/08/educacion-en-la-epoca-colonial-de-Latinoamerica.jpg" alt="Educación en la Colonia">
+        </div>
+    </div>
+
+    <div class="timeline-event left color3" onclick="toggleDescription(this)">
+        <div class="event-title">México Independiente (1821-1910)</div>
+        <div class="event-description">
+            <strong>Escuelas Lancasterianas:</strong> Método de enseñanza mutua.<br>
+            <strong>Instrucción pública:</strong> Fundación de instituciones públicas.<br>
+            <strong>Escuela Nacional Preparatoria:</strong> Creación de una institución de nivel medio superior.
+            <img src="https://relatosehistorias.mx/sites/default/files/styles/relato750x650/public/maestro.jpg?itok=kWvj9SHC" alt="México Independiente">
+        </div>
+    </div>
+
+    <div class="timeline-event right color4" onclick="toggleDescription(this)">
+        <div class="event-title">Revolución Mexicana (1910-1920)</div>
+        <div class="event-description">
+            <strong>Ateneo de la Juventud:</strong> Movimiento intelectual de renovación.<br>
+            <strong>José Vasconcelos:</strong> Primer secretario de educación.<br>
+            <strong>SEP:</strong> Fundación de la Secretaría de Educación Pública.
+            <img src="https://i0.wp.com/revistavoces.net/wp-content/uploads/2021/05/08_la_educadora_en_la_revolucion_mexicana.png?resize=618%2C309" alt="Revolución Mexicana">
+        </div>
+    </div>
+
+    <div class="timeline-event left color5" onclick="toggleDescription(this)">
+        <div class="event-title">Educación Socialista (1934-1940)</div>
+        <div class="event-description">
+            Reforma educativa basada en el socialismo, que promueve la educación como herramienta de cambio social.
+            <img src="https://i.pinimg.com/originals/b2/09/7e/b2097e4ca43bb5d26dd982de5d8226ef.jpg" alt="Educación Socialista">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleDescription(event) {
+        const description = event.querySelector(".event-description");
+        if (description.style.display === "block") {
+            description.style.display = "none";
+        } else {
+            description.style.display = "block";
         }
+    }
+</script>
 
-        function updatePDA() {
-            const contenido = document.getElementById('contenidosSelect').value;
-            const pdaSelect = document.getElementById('pdaSelect');
-            
-            // Limpiar PDA anteriores
-            pdaSelect.innerHTML = '<option selected disabled value="">Selecciona un PDA</option>';
-            
-            // Aquí puedes modificar el contenido del PDA según el contenido seleccionado
-            if (contenido === 'contenido1') {
-                pdaSelect.innerHTML += '<option value="pda1">PDA 1</option>';
-            } else if (contenido === 'contenido2') {
-                pdaSelect.innerHTML += '<option value="pda2">PDA 2</option>';
-            }
-        }
-
-        function addProblem(button) {
-            const problemasContainer = button.closest('.situacion-group').querySelector('.problemas-container');
-            const problemGroup = document.createElement('div');
-            problemGroup.classList.add('problem-group');
-            problemGroup.innerHTML = `
-                <textarea class="form-control mb-2" rows="2" placeholder="Escribir los problemas resultantes de la problematización anterior.  Ordenar esos problemas con algún criterio: histórico, genealógico, menor a mayor profundidad."></textarea>
-                <button type="button" class="btn btn-danger btn-sm mb-2" onclick="removeProblem(this)">Eliminar problema</button>
-            `;
-            problemasContainer.appendChild(problemGroup);
-
-            const textarea = problemGroup.querySelector('textarea');
-            textarea.addEventListener('blur', function () {
-                if (textarea.value !== "") {
-                    addToLocalDropdown(button, textarea.value);
-                }
-            });
-        }
-
-        function removeProblem(button) {
-            const problemText = button.previousElementSibling.value;
-            if (problemText !== "") {
-                removeFromDropdown(button, problemText);
-            }
-            button.parentElement.remove();
-        }
-
-        function removeSituacion(button) {
-            button.parentElement.remove();
-        }
-
-        function addToLocalDropdown(button, problemText) {
-            const problemasLista = button.closest('.situacion-group').querySelector('.lista-problemas-locales');
-            const option = document.createElement('option');
-            option.value = problemText;
-            option.text = problemText;
-            problemasLista.appendChild(option);
-        }
-
-        function removeFromDropdown(button, problemText) {
-            const problemasLista = button.closest('.situacion-group').querySelector('.lista-problemas-locales');
-            const options = problemasLista.querySelectorAll('option');
-            options.forEach(option => {
-                if (option.value === problemText) {
-                    option.remove();
-                }
-            });
-        }
-
-        document.getElementById('nextBtn').addEventListener('click', function () {
-            document.getElementById('mainSection').style.display = 'none';
-            document.getElementById('faseSection').style.display = 'block';
-
-            // Pasar problemas a la lista desplegable en la sección de Fase
-            const problemas = document.querySelectorAll('.lista-problemas-locales option');
-            const problemasSelect = document.getElementById('problemasSelect');
-            problemasSelect.innerHTML = '<option selected disabled value="">Selecciona un problema</option>';
-            problemas.forEach(problem => {
-                const option = document.createElement('option');
-                option.value = problem.value;
-                option.text = problem.text;
-                problemasSelect.appendChild(option);
-            });
-        });
-
-        document.getElementById('previousBtn').addEventListener('click', function () {
-            document.getElementById('faseSection').style.display = 'none';
-            document.getElementById('mainSection').style.display = 'block';
-        });
-        // Agregar nueva fila en la sección de fase
-        document.getElementById('addRowBtn').addEventListener('click', function () {
-            const matrixContainer = document.getElementById('matrix-container');
-            const newRow = document.createElement('div');
-            newRow.classList.add('row-matrix');
-            newRow.innerHTML = `
-                <div class="col">
-                    <select class="form-select" id="problemasSelect">
-                        <option selected disabled value="">Selecciona un problema</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select" id="faseSelect">
-                        <option selected disabled value="">Fase</option>
-                        <option value="fase1">Fase 1</option>
-                        <option value="fase2">Fase 2</option>
-                        <option value="fase3">Fase 3</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select" id="camposFormativosSelect">
-                        <option selected disabled value="">Selecciona un campo formativo</option>
-                        <option value="campo1">Campo Formativo 1</option>
-                        <option value="campo2">Campo Formativo 2</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select" id="contenidosSelect">
-                        <option selected disabled value="">Selecciona un contenido</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select" id="pdaSelect">
-                        <option selected disabled value="">Selecciona un PDA</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select">
-                        <option selected disabled value="">Selecciona un eje articulador</option>
-                        <option value="eje1">Eje 1</option>
-                        <option value="eje2">Eje 2</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select">
-                        <option selected disabled value="">Selecciona un objeto de enseñanza</option>
-                        <option value="objeto1">Objeto 1</option>
-                        <option value="objeto2">Objeto 2</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <select class="form-select">
-                        <option selected disabled value="">Selecciona un nivel de logro</option>
-                        <option value="nivel1">Nivel 1</option>
-                        <option value="nivel2">Nivel 2</option>
-                    </select>
-                </div>
-                <div class="col">
-                    <textarea class="form-control textarea-evidencia" placeholder="Evidencia de Aprendizaje"></textarea>
-                </div>
-                <div class="col">
-                    <button type="button" class="btn btn-danger remove-row-btn">-</button>
-                </div>
-            `;
-            matrixContainer.appendChild(newRow);
-
-            // Añadir funcionalidad para eliminar fila
-            newRow.querySelector('.remove-row-btn').addEventListener('click', function () {
-                newRow.remove();
-            });
-        });
-
-        // Añadir funcionalidad para eliminar la fila existente
-        document.querySelectorAll('.remove-row-btn').forEach(function (button) {
-            button.addEventListener('click', function () {
-                button.closest('.row-matrix').remove();
-            });
-        });
-    </script>
 </body>
 </html>
