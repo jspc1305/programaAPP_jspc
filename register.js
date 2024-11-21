@@ -1,3 +1,6 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js";
+
 // Configuración de Firebase
 const firebaseConfig = {
 apiKey: "AIzaSyD1G-...",
@@ -11,42 +14,35 @@ appId: "1:104923167292387679742:web:...",
 // Inicializar Firebase
 const app = firebase.initializeApp(firebaseConfig);
 const auth = firebase.getAuth(app);
+//const app = initializeApp(firebaseConfig);
 
-//inputs
-const userName = document.getElementById('fullname').value;
-const email = document.getElementById('email').value;
-const phone = document.getElementById('phone').value;
+// Esperar a que el DOM esté completamente cargado
+document.addEventListener("DOMContentLoaded", () => {
+  const submit = document.getElementById('submit');
 
-//submit button
-
-const submit = document.getElementById('submit');
-submit.addEventListener("click",function(){
-  event.preventDefault()
-  alert(5)
-})
-
-// Configuración para Google Sign-In
-const provider = new firebase.GoogleAuthProvider();
-
-// Evento de inicio de sesión con Google
-document.getElementById('googleSignIn').addEventListener('click', async () => {
-  try {
-    const result = await firebase.signInWithPopup(auth, provider);
-    const user = result.user;
-
-    // Mostrar información del usuario
-    alert(`Bienvenido ${user.displayName}!`);
-
-    // Opcional: Almacenar usuario en tu base de datos Firestore
-    // const db = firebase.firestore();
-    // await db.collection('users').doc(user.uid).set({
-    //   name: user.displayName,
-    //   email: user.email,
-    //   createdAt: new Date()
-    // });
-
-      } catch (error) {
-        console.error(error);
-        alert("Error al iniciar sesión: " + error.message);
-      }
-    });
+  // Asociar el evento click al botón
+  submit.addEventListener("click", function(event) {
+      event.preventDefault(); // Prevenir el comportamiento predeterminado del botón
+      
+      //inputs
+    const userName = document.getElementById('fullname').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('pass').value;
+      const auth = getAuth();
+createUserWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    
+    // Signed in 
+    const user = userCredential.user;
+    alert("¡Registro completado correctamente!");
+    window.location.href = "login.html"
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    alert(errorMessage);
+    // ..
+  });
+  });
+});

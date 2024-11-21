@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro y Pago</title>
     <link rel="stylesheet" href="styles.css">
-    <script type="module" src="register.js" defer></script>
+    
 </head>
 <body>
     <div class="container">
@@ -17,13 +17,13 @@
             <form action="#" method="POST">
                 <!-- Sección de Registro -->
                 <label for="fullname">Nombre completo:</label>
-                <input type="text" id="fullname" name="fullname" placeholder="Tu nombre completo" required>
+                <input type="text" id="fullname" name="fullname" placeholder="Tu nombre completo">
 
                 <label for="email">Correo electrónico:</label>
-                <input type="email" id="email" name="email" placeholder="Tu correo electrónico" required>
+                <input type="email" id="email" name="email" placeholder="Tu correo electrónico">
 
-                <label for="phone">Número de teléfono:</label>
-                <input type="tel" id="phone" name="phone" placeholder="Tu número de teléfono" required>
+                <label for="phone">Contraseña:</label>
+                <input type="password" id="pass" name="pass" placeholder="Contraseña">
 
                 <!-- Sección de Pago -->
                 <div class="payment-section">
@@ -37,12 +37,13 @@
                     </div>
                     <p class="note">Sube el comprobante de la transferencia para validar tu registro.</p>
                     <label for="payment-proof">Subir comprobante:</label>
-                    <input type="file" id="payment-proof" name="payment-proof" accept=".jpg, .png, .pdf" required>
+                    <input type="file" id="payment-proof" name="payment-proof" accept=".jpg, .png, .pdf">
                 </div>
 
-                <button type="submit">Completar Registro</button>
+                <button id="submit" type="submit">Completar Registro</button>
             </form>
         </div>
     </div>
+    <script src="register.js"></script>
 </body>
 </html>
