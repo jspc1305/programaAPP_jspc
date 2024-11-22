@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página de Login y Registro</title>
     <link rel="stylesheet" href="styles.css">
+    <script type="module" src="login.js" defer></script>
 </head>
 <body>
     <div class="container">
@@ -13,11 +14,11 @@
                 <h2>Bienvenido</h2>
                 <p>Inicia sesión o regístrate</p>
             </div>
-            <form action="#" method="POST">
-                <input type="text" name="username" placeholder="Nombre de usuario" required>
-                <input type="password" name="password" placeholder="Contraseña" required>
+            <form id="loginForm">
+                <input id="email" type="email" name="email" placeholder="Correo electrónico" required>
+                <input id="password" type="password" name="password" placeholder="Contraseña" required>
                 <button type="submit">Iniciar sesión</button>
-                <p class="register-link">¿No tienes cuenta? <a href="#">Regístrate aquí</a></p>
+                <p class="register-link">¿No tienes cuenta? <a href="index.html">Regístrate aquí</a></p>
             </form>
         </div>
     </div>

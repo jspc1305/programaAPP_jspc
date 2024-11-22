@@ -1,48 +1,68 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js";
+// Importar y configurar Firebase
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
-apiKey: "AIzaSyD1G-...",
-authDomain: "ddapptic.firebaseapp.com",
-projectId: "ddapptic",
-storageBucket: "ddapptic.appspot.com",
-messagingSenderId: "104923167292387679742",
-appId: "1:104923167292387679742:web:...",
+  apiKey: "AIzaSyAr_Zc0vC3M2TDlafTx-SbBijxD7nEyqvg",
+  authDomain: "p1dapptic.firebaseapp.com",
+  projectId: "p1dapptic",
+  storageBucket: "p1dapptic.firebasestorage.app",
+  messagingSenderId: "161404592886",
+  appId: "1:161404592886:web:4f28bbf689830e15dd02d7"
 };
 
 // Inicializar Firebase
-const app = firebase.initializeApp(firebaseConfig);
-const auth = firebase.getAuth(app);
-//const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-// Esperar a que el DOM esté completamente cargado
-document.addEventListener("DOMContentLoaded", () => {
-  const submit = document.getElementById('submit');
+// Referencias a los elementos del DOM
+const registerForm = document.getElementById("registerForm");
 
-  // Asociar el evento click al botón
-  submit.addEventListener("click", function(event) {
-      event.preventDefault(); // Prevenir el comportamiento predeterminado del botón
-      
-      //inputs
-    const userName = document.getElementById('fullname').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('pass').value;
-      const auth = getAuth();
-createUserWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    
-    // Signed in 
-    const user = userCredential.user;
+// Manejar el evento de registro
+registerForm.addEventListener("submit", async (e) => {
+  e.preventDefault(); // Prevenir el envío del formulario
+
+  const email = document.getElementById("email").value;
+  const confirmEmail = document.getElementById("confirmEmail").value;
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+
+  // Validación de correos coincidentes
+  if (email !== confirmEmail) {
+    alert("Los correos electrónicos no coinciden.");
+    return;
+    }
+
+  // Validación de formato de correo electrónico
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    alert("El formato del correo electrónico es incorrecto.");
+    return;
+    }
+
+  // Validación de dominio conocido
+  const validDomains = ["gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "edu.mx"];
+  const emailDomain = email.split("@")[1];
+  if (!validDomains.includes(emailDomain)) {
+    alert("El dominio del correo electrónico no es válido o no está reconocido.");
+    return;
+    }
+
+  // Validación de contraseñas coincidentes
+  if (password !== confirmPassword) {
+    alert("Las contraseñas no coinciden.");
+    return;
+    }
+
+  // Si todo está correcto, se puede enviar el formulario
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     alert("¡Registro completado correctamente!");
     window.location.href = "login.html"
-    // ...
-  })
-  .catch((error) => {
+  } catch (error) {
     const errorCode = error.code;
     const errorMessage = error.message;
-    alert(errorMessage);
-    // ..
-  });
-  });
+    alert("Tenemos un Error");
+  }
 });
