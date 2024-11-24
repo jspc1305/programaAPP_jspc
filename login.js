@@ -31,7 +31,7 @@ loginForm.addEventListener("submit", async (e) => {
   try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       alert("¡Ingresó correctamente!");
-      window.location.href = "start.html"
+      window.location.href = "dashboard.html"
 
   } catch (error) {
     const errorCode = error.code;

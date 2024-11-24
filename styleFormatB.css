@@ -1,0 +1,204 @@
+/*
+! Planificación Educativa CSS
+Minimalista y optimizado inspirado en TailwindCSS
+*/
+
+/* Configuración global */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb; /* Neutral soft */
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-feature-settings: normal;
+  font-variation-settings: normal;
+}
+
+body {
+  margin: 0;
+  line-height: inherit;
+  background-color: #FFFFFF; /* Slate-100 */
+  color: #404040; /* Neutral-700 */
+}
+
+/* Tipografía */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700; /* Bold */
+  color: #040420; /* Main color */
+}
+
+p {
+  margin: 0;
+  color: #525252; /* Neutral-600 */
+  font-size: 0.875rem; /* Text-sm */
+  line-height: 1.5rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.small {
+  font-size: 0.75rem; /* Text-xs */
+}
+
+/* Tablas */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem; /* Text-sm */
+  line-height: 1.25rem;
+}
+
+th, td {
+  padding: 0.75rem; /* Padding 3 */
+  border-top: 2px solid #e5e7eb;
+  border-bottom: 2px solid #e5e7eb; /* Border color */
+  border-left: 2px solid #e5e7eb; 
+  border-right: 2px solid #e5e7eb; 
+}
+
+thead th {
+  background-color: #f1f5f9; /* Slate-100 */
+  font-weight: 700; /* Bold */
+  color: #5c6ac4; /* Main color */
+}
+
+tbody tr:hover {
+  background-color: #f8fafc; /* Light hover */
+}
+
+.bold-column {
+  font-weight: 700; /* Negritas */
+  color: #404040;   /* Neutral-700 para mayor contraste */
+  text-align: left; /* Asegura alineación consistente */
+  padding: 0.75rem; /* Igual que otras celdas */
+  border-bottom: 1px solid #e5e7eb; /* Mantén el estilo de la tabla */
+}
+
+/* Contenedores */
+.container {
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 3.5rem; /* Padding px-14 */
+}
+
+.section {
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem; /* Padding py-6 */
+  margin-top: 1.5rem; /* Spacing */
+}
+
+.section-header {
+  font-size: 1.125rem; /* Text-lg */
+  font-weight: 700; /* Bold */
+  color: #5c6ac4; /* Main color */
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb; /* Border underline */
+}
+
+/* Colores personalizados */
+.bg-main {
+  background-color: #5c6ac4; /* Main color */
+}
+
+.text-main {
+  color: #5c6ac4; /* Main color */
+}
+
+.text-neutral-600 {
+  color: #525252; /* Neutral-600 */
+}
+
+.text-neutral-700 {
+  color: #404040; /* Neutral-700 */
+}
+
+.text-white {
+  color: #fff;
+}
+
+/* Espaciados */
+.p-3 {
+  padding: 0.75rem;
+}
+
+.px-14 {
+  padding-left: 3.5rem;
+  padding-right: 3.5rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+/* Posiciones */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.align-top {
+  vertical-align: top;
+}
+
+/* Botones */
+button {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem; /* Text-sm */
+  font-weight: 700; /* Bold */
+  color: #fff;
+  background-color: #5c6ac4; /* Main color */
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  /*background-color: #475569; /* Darker slate */
+}
+
+button:disabled {
+  background-color: #cbd5e1; /* Slate-300 */
+  cursor: not-allowed;
+}
+
+/* Footer */
+footer {
+  background-color: #f1f5f9; /* Slate-100 */
+  padding: 1rem;
+  text-align: center;
+  font-size: 0.75rem; /* Text-xs */
+  color: #94a3b8; /* Slate-400 */
+  margin-top: 2rem;
+}
+
+footer span {
+  padding: 0 0.5rem;
+}
