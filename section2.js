@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         row.className = 'grid grid-cols-10 gap-4 items-center relative';
 
         // Crear las columnas
-        const problemasSelect = createSelect(getProblemasRedactados());
+        const problemasSelect = createSelect(getProblemasRedactados()); // Selector dinámico de problemas
         const faseSelect = createSelect(['Fase1', 'Fase2', 'Fase3']);
         const camposSelect = createSelect([]);
         const contenidosSelect = createSelect([]);
@@ -173,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const problemasRedactados = getProblemasRedactados();
         
         problemaSelects.forEach(select => {
-            if (select && select.tagName.toLowerCase() === 'select') {
+            if (select && select.tagName.toLowerCase() === 'select' && select.options[0]?.textContent === "Selecciona una opción") {
                 updateSelect(select, problemasRedactados);
             }
         });

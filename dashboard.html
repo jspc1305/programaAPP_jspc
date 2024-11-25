@@ -14,7 +14,7 @@
     <aside class="bg-white w-64 h-screen shadow-lg fixed flex flex-col">
         <div class="p-4 border-b text-center">
             <!-- Imagen del Dashboard -->
-            <img id="dashboardImage" src="/assets/Ddapptic.svg" 
+            <img id="dashboardImage" src="/assets/Ddapptic_LOGO.png" 
                  alt="Imagen del Dashboard" 
                  class="object-cover">
         </div>
@@ -23,6 +23,9 @@
                 <li>
                     <button class="w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-800 transition"
                             onclick="showSection('section1')">Plano de la Realidad</button>
+                            <button id="addPlanoBtn" class="btn bg-blue-500 hover:bg-blue-600 text-white mb-4">
+                                Crear nueva ventana "Descripción del Tema"
+                            </button>
                 </li>
                 <li>
                     <button class="w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-100 hover:text-gray-800 transition"
@@ -65,26 +68,7 @@
             <!-- Divisor -->
             <hr class="border-gray-300 my-6">
             
-            <!-- Descripción del Tema -->
-            <div class="mb-6">
-                <label for="descripcionTema" class="block text-sm font-semibold mb-2">Descripción del Tema</label>
-                <textarea id="descripcionTema" 
-                          placeholder="Son elementos que facilitan la descripción del tema..." 
-                          rows="5"
-                          class="input w-full resize-y"></textarea>
-            </div>
-        
-            <!-- Diferenciador visual -->
-            <hr class="border-gray-300 my-6">
-        
-            <!-- Zona dinámica para agregar situaciones -->
-            <div id="situacionesContainer" class="space-y-6">
-                <button id="addSituacionBtn" 
-                        type="button" 
-                        class="btn bg-blue-500 hover:bg-blue-600 text-white">
-                    Agregar otra descripción de situaciones
-                </button>
-            </div>
+            
         </section>        
 
         <section id="section2" class="hidden">

@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+document.getElementById('download-btn').addEventListener('click', (event) => {
+    event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+  
+    // Generar el contenido HTML dinámicamente
+    const newHtmlContent = `
+      <!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -12,7 +17,7 @@
   <div class="container mx-auto px-2 py-6" id="content">
     <!-- Encabezado -->
     <div class="flex justify-bet ween items-center py-4 border-b">
-      <img src="assets/Ddapptic_LOGO.png" alt="Logo" class="h-12">
+      <img src="assets/Ddapptic.svg" alt="Logo" class="h-12">
       <div id="current-date-time" class="text-sm text-right">
         <p class="text-slate-400">Fecha</p>
         <p class="font-bold text-gray-700">15 de noviembre, 2024</p>
@@ -27,31 +32,31 @@
     <!-- Fila 1 -->
     <tr>
       <td class="py-2 bold-column">Nivel Educativo:</td>
-      <td class="py-2 ">Primaria</td>
+      <td class="py-2 "></td>
       <td class="py-2 bold-column">Nombre del Centro de Trabajo:</td>
-      <td class="py-2">Colegio Generico</td>
+      <td class="py-2"></td>
       <td class="py-2 bold-column">Zona Escolar:</td>
-      <td class="py-2">Zona 5</td>
+      <td class="py-2"></td>
     </tr>
 
     <!-- Fila 2 -->
     <tr>
       <td class="py-2 bold-column">Sector Educativo:</td>
-      <td class="py-2">Sector 1</td>
+      <td class="py-2"></td>
       <td class="py-2 bold-column">Fase:</td>
-      <td class="py-2">Fase 1</td>
+      <td class="py-2"></td>
       <td class="py-2 bold-column">Grado:</td>
-      <td class="py-2">6to</td>
+      <td class="py-2"></td>
     </tr>
 
     <!-- Fila 3 -->
     <tr>
       <td class="py-2 bold-column">Grupo:</td>
-      <td class="py-2">A</td>
+      <td class="py-2"></td>
       <td class="py-2 bold-column">Nombre del Docente:</td>
-      <td class="py-2">Juan Pérez</td>
+      <td class="py-2"></td>
       <td class="py-2 bold-column">Nombre del Director:</td>
-      <td class="py-2">José Pérez</td>
+      <td class="py-2"></td>
     </tr>
 
     <!-- Fila 4: Periodo de realización -->
@@ -64,11 +69,11 @@
     <!-- Fila 5 -->
     <tr>
       <td class="py-2 bold-column">Inicio:</td>
-      <td class="py-2">13/05/2024</td>
+      <td class="py-2"></td>
       <td class="py-2 border border-gray-300"></td>
       <td class="py-2 font-bold border border-gray-300"></td>
       <td class="py-2 bold-column">Fin:</td>
-      <td class="py-2">13/10/2024</td>
+      <td class="py-2"></td>
     </tr>
   </tbody>
 </table>
@@ -90,7 +95,7 @@
 
     <!-- Fila 2 -->
     <tr>
-      <td colspan="2" class="py-2">Escribir los problemas resultantes de la problematización anterior.  Ordenar esos problemas con algún criterio: histórico, genealógico, menor a mayor profundidad.</td>
+      <td colspan="2" class="py-2"></td>
       <td class="py-2">Agregar</td>
       <td class="py-2">Agregar</td>
       <td class="py-2">Agregar</td>
@@ -363,31 +368,16 @@ Poner en práctica los procedimientos aprendidos para resolver problemas en cont
       <p>Escuela Modelo | contacto@escuelamodelo.edu.mx | +52-123-456-7890</p>
     </footer>
   </div>
-  <script type="text/javascript">
-    function updateDateTime() {
-  const dateTimeElement = document.getElementById("current-date-time");
-  const now = new Date();
-
-  // Formatea la fecha y hora
-  const formattedDate = now.toLocaleDateString("es-ES", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-
-  const formattedTime = now.toLocaleTimeString("es-ES");
-
-  // Actualiza el contenido del elemento
-  dateTimeElement.textContent = `${formattedDate} ${formattedTime}`;
-}
-
-// Llama a la función al cargar la página
-updateDateTime();
-
-// Actualiza la hora cada segundo
-setInterval(updateDateTime, 1000);
-  </script>
+  
 </body>
 
 </html>
+    `;
+  
+    // Abrir una nueva pestaña y escribir el contenido generado
+    const newWindow = window.open();
+    newWindow.document.open();
+    newWindow.document.write(newHtmlContent);
+    newWindow.document.close();
+  });
+  
