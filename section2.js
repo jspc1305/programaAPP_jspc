@@ -19,10 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+
     // Obtener problemas redactados de la sección 1
     function getProblemasRedactados() {
         const problemas = [];
-        document.querySelectorAll('#situacionesContainer .problemas-container .problem-textarea').forEach(textarea => {
+        document.querySelectorAll('.problem-textarea').forEach(textarea => {
             const texto = textarea.value.trim();
             if (texto !== '') {
                 problemas.push(texto);
@@ -138,34 +139,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mostrar ventana emergente para redacción de texto
-    function showPopup(type, button) {
-        const popup = document.createElement('div');
-        popup.className = 'fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50';
-        const content = document.createElement('div');
-        content.className = 'bg-white p-6 rounded-lg w-96';
-        
-        const textarea = createTextarea(5);
-        const saveButton = document.createElement('button');
-        saveButton.className = 'btn bg-green-500 hover:bg-green-600 text-white mt-4';
-        saveButton.textContent = 'Guardar';
+    // Variable global para almacenar el texto de cada botón
+let savedText = {
+    objeto: '',
+    nivel: '',
+    evidencia: ''
+};
 
-        saveButton.addEventListener('click', () => {
-            if (type === 'objeto') {
-                button.textContent = textarea.value || 'Editar';
-            } else if (type === 'nivel') {
-                button.textContent = textarea.value || 'Editar';
-            } else if (type === 'evidencia') {
-                button.textContent = textarea.value || 'Editar';
-            }
-            document.body.removeChild(popup);
-        });
+// Mostrar ventana emergente para redacción de texto
+function showPopup(type, button) {
+    const popup = document.createElement('div');
+    popup.className = 'fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50';
+    const content = document.createElement('div');
+    content.className = 'bg-white p-6 rounded-lg w-96';
 
-        content.appendChild(textarea);
-        content.appendChild(saveButton);
-        popup.appendChild(content);
-        document.body.appendChild(popup);
-    }
+    const textarea = createTextarea(5);
+    
+    // Cargar el texto previamente guardado en el textarea
+    textarea.value = savedText[type] || '';
+
+    const saveButton = document.createElement('button');
+    saveButton.className = 'btn bg-green-500 hover:bg-green-600 text-white mt-4';
+    saveButton.textContent = 'Guardar';
+
+    saveButton.addEventListener('click', () => {
+        // Guardar el texto redactado para futura edición
+        savedText[type] = textarea.value;
+
+        // Actualizar el texto del botón con el texto redactado
+        button.textContent = textarea.value || 'Editar';
+
+        // Cerrar el popup
+        document.body.removeChild(popup);
+    });
+
+    content.appendChild(textarea);
+    content.appendChild(saveButton);
+    popup.appendChild(content);
+    document.body.appendChild(popup);
+}
+
+// Función para crear un área de texto
+function createTextarea(rows) {
+    const textarea = document.createElement('textarea');
+    textarea.rows = rows;
+    textarea.className = 'w-full p-2 border rounded';
+    return textarea;
+}
+
 
     // Función para actualizar la lista de problemas redactados
     function updateProblemas() {

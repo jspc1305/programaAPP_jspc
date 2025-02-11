@@ -1,5 +1,6 @@
 function abrirNuevaPestana() {
     // Crear una nueva ventana
+    const descripcionTema1 = document.getElementById("descripcionTema-1").value;
     const nivelEducativo = document.getElementById("nivelEducativo").value;
     const centroTrabajo = document.getElementById("centroTrabajo").value;
     const zonaEscolar = document.getElementById("zonaEscolar").value;
@@ -11,7 +12,7 @@ function abrirNuevaPestana() {
     const nombreDirector = document.getElementById("nombreDirector").value;
     const inicioPeriodo = document.getElementById("inicioPeriodo").value;
     const finPeriodo = document.getElementById("finPeriodo").value;
-    const descripcionTema = document.getElementById("descripcionTema").value;
+    //const descripcionTema = document.getElementById("descripcionTema").value;
     //const descriptionTextarea = document.getElementById("descriptionTextarea").value;
 
     var nuevaVentana = window.open();
@@ -25,7 +26,7 @@ function abrirNuevaPestana() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planificación Educativa</title>
+  <title>Planificación Didáctica</title>
   <link rel="stylesheet" href="styleFormatB.css">
 </head>
 
@@ -111,8 +112,8 @@ function abrirNuevaPestana() {
 
     <!-- Fila 2 -->
     <tr>
-      <td colspan="2" class="py-2">${descripcionTema}</td>
-      <td class="py-2">Agregar</td>
+      <td colspan="2" class="py-2">${descripcionTema1}</td>
+      <td class="py-2">${descripcionTema1}</td>
       <td class="py-2">Agregar</td>
       <td class="py-2">Agregar</td>
       <td class="py-2">Agregar</td>
